@@ -1,0 +1,22 @@
+---
+- name: Manage files on all managed nodes
+  hosts: worker01
+  become: yes
+  tasks:
+    - name: Create a new directory
+      file:
+        path: /tmp/mydirectory
+        state: directory
+        mode: '0755'
+
+    - name: Create a new file with content
+      copy:
+        dest: /tmp/myfile.txt
+        content: |
+          This is a sample file created by Ansible.
+        mode: '0644'
+
+    - name: Ensure old file is removed
+      file:
+        path: /tmp/oldfile.txt
+        state: absent

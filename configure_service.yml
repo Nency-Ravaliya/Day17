@@ -1,0 +1,15 @@
+---
+- name: Configure and manage nginx service
+  hosts: worker01
+  become: yes
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+
+    - name: Start and enable nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes

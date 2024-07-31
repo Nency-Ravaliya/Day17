@@ -1,0 +1,49 @@
+---
+- name: Playbook with Error Handling Example
+  hosts: worker01
+  become: yes
+  tasks:
+    - name: Handle errors while starting a non-existent service
+      block:
+        - name: Start a non-existent service
+          service:
+            name: httpd
+            state: started
+          ignore_errors: yes
+      rescue:
+        - name: Log error when starting the non-existent service fails
+          debug:
+            msg: "Failed to start non_existent_service. It may not exist on the system."
+      always:
+        - name: Always execute this task
+          debug:
+            msg: "Error handling block has completed."
+
+    - name: Handle errors while accessing a non-existent file
+      block:
+        - name: Access a non-existent file
+          command: cat ansi/nency.txt
+      rescue:
+        - name: Log error when accessing the non-existent file fails
+          debug:
+            msg: "Failed to access /ansi/nency.txt. The file may not exist."
+      always:
+        - name: Always execute this task
+          debug:
+            msg: "File access error handling block has completed."
+
+    - name: Install a valid package as a fallback
+      block:
+        - name: Install a valid package
+          apt:
+            name: curl
+            state: present
+      rescue:
+        - name: Log error if package installation fails
+          debug:
+            msg: "Failed to install curl. Please check the package manager."
+      always:
+        - name: Always execute this task
+          debug:
+            msg: "Package installation block has completed."
+

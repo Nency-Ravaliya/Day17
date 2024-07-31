@@ -1,0 +1,20 @@
+---
+- name: Install packages on all managed nodes
+  hosts: worker01
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
